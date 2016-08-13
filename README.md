@@ -12,6 +12,7 @@ Only **390 bytes** gzipped.
 - [x] partials
 - [ ] variables dot notation
 - [ ] set delimiter
+- [ ] tests
 
 ## Usage
 
