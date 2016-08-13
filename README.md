@@ -12,3 +12,13 @@ Only **390 bytes** gzipped.
 - [x] partials
 - [ ] variables dot notation
 - [ ] set delimiter
+
+## Usage
+
+```javascript
+var template = `Hello {{name}}!`
+var context = {name: "world"}
+
+mustache.call(context, template)
+// => Hello world!
+```
