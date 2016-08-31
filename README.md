@@ -4,7 +4,7 @@ The smallest implementation of Mustache template engine.
 Only **390 bytes** gzipped.
 
 ## Features
-- [x] variables `{{escaped}}, {{&unescaped}}, {{{unescaped}}}`
+- [x] variables `{{escaped}}`, `{{&unescaped}}`, `{{{unescaped}}}`
 - [x] sections `{{#section}}`
 - [x] inverted sections `{{^inverted}}`
 - [x] lambdas `{{#lambda}}`
