@@ -4,15 +4,15 @@ The smallest implementation of Mustache template engine.
 Only **390 bytes** gzipped.
 
 ## Features
-- [x] variables
-- [x] sections
-- [x] inverted sections
-- [x] lambdas
-- [x] comments
-- [x] partials
-- [ ] variables dot notation
-- [ ] set delimiter
-- [ ] tests
+- [x] variables `{{escaped}}, {{&unescaped}}, {{{unescaped}}}`
+- [x] sections `{{#section}}`
+- [x] inverted sections `{{^inverted}}`
+- [x] lambdas `{{#lambda}}`
+- [x] comments `{{!comment}}`
+- [x] partials `{{>partial}}`
+- [x] tests
+- [ ] variables dot notation `{{obj.prop}}`
+- [ ] set delimiter `{{=<% %>=}}`
 
 ## Usage
 
@@ -20,6 +20,6 @@ Only **390 bytes** gzipped.
 var template = `Hello {{name}}!`
 var context = {name: "world"}
 
-mustache.call(context, template)
+mustache(template, context)
 // => Hello world!
 ```
