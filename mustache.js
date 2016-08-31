@@ -1,11 +1,11 @@
-function mustache(template, parent, invert) {
-  var self = this
+/** @version 0.3.0 */
+function mustache(template, self, parent, invert) {
   var render = mustache
   var output = ""
   var i
-  
-  self = Array.isArray(self) ? self : self ? [self] : []
-  self = invert ? self.length ? [] : [0] : self
+
+  self = Array.isArray(self) ? self : (self ? [self] : [])
+  self = invert ? self.length ? [] : [1] : self
   
   for (i = 0; i < self.length; i++) {
     var childCode = ''
@@ -22,7 +22,7 @@ function mustache(template, parent, invert) {
             function(match, raw, comment, isRaw, partial, name) {
               return raw ? ctx[raw] || ""
                 : isRaw ? ctx[name] || ""
-                : partial ? render.call(ctx, ctx[name] || "")
+                : partial ? render(ctx[name] || "", ctx)
                 : !comment ? new Option(ctx[name] || "").innerHTML
                 : ""
             }
@@ -34,9 +34,11 @@ function mustache(template, parent, invert) {
         if (close) {
           if (!--depth) {
             if (/^f/.test(typeof ctx[name])) {
-              output += ctx[name].call(ctx, childCode, render.bind(ctx))
+              output += ctx[name].call(ctx, childCode, function (template) {
+                return render(template, ctx)
+              })
             } else {
-              output += render.call(ctx[name], childCode, ctx, inverted) 
+              output += render(childCode, ctx[name], ctx, inverted) 
             }
             childCode = ""
           }
