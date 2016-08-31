@@ -1,0 +1,86 @@
+<script src="mustache.js"></script>
+<script>
+  var template = `
+  var is {{var}}
+  nested object is
+  {{#obj}}
+    {{#goes}}
+    {{deep}}
+    {{/goes}}
+  {{/obj}}
+  list is 
+  {{#list}}
+    {{item}}
+  {{/list}}
+  inverted is
+  {{^inverted}}
+    okay
+  {{/inverted}}
+  dot is
+  {{#dot}}
+    {{.}}
+  {{/dot}}
+  lambda is
+  {{#lambda}}
+    {{{raw}}}
+  {{/lambda}}
+  raw is {{{raw}}}
+  raw2 is {{&raw}}
+  comment is {{!not}} okay
+  partial is {{>partial}}
+  `
+
+  var expected = `
+  var is &lt;okay&gt;
+  nested object is
+  
+    
+    okay
+    
+  
+  list is 
+  
+    okay
+  
+    okay2
+  
+  inverted is
+  
+    okay
+  
+  dot is
+  
+    okay
+  
+  lambda is
+  <b>
+    <okay>
+  okay</b>
+  raw is <okay>
+  raw2 is <okay>
+  comment is  okay
+  partial is <okay>
+  `
+  var ctx = {
+    var: "<okay>",
+    obj: {goes: {deep: "okay"}},
+    list:[{item:"okay"},{item:"okay2"}],
+    dot: ["okay"],
+    raw: "<okay>",
+    inverted: false,
+    lambda: function (text, render) {
+      return "<b>" + render(text + this.dot[0]) + "</b>"
+    },
+    partial: "{{{var}}}",
+  }
+  var output = mustache(template, ctx)
+  
+  var start = Date.now()
+  var n = 100
+  while (n--) {
+    mustache(template, ctx)
+  }
+  document.write("<pre>Rendered in " + (Date.now() - start) / 100 + "ms\n")
+  document.write("Test " + (output === expected ? "successful :)" : "FAILED :("))
+  console.log(output)
+</script>
