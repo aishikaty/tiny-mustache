@@ -1,7 +1,7 @@
 # Tiny Mustache
 The smallest implementation of Mustache template engine.
 
-Only **390 bytes** gzipped.
+Only **442 bytes** gzipped.
 
 ## Features
 - [x] variables `{{escaped}}`, `{{&unescaped}}`, `{{{unescaped}}}`
