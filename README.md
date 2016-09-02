@@ -11,7 +11,7 @@ Only **390 bytes** gzipped.
 - [x] comments `{{!comment}}`
 - [x] partials `{{>partial}}`
 - [x] tests
-- [ ] variables dot notation `{{obj.prop}}`
+- [x] variables dot notation `{{obj.prop}}`
 - [ ] set delimiter `{{=<% %>=}}`
 
 ## Usage
