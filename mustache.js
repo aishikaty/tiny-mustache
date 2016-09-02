@@ -1,11 +1,17 @@
-/** @version 0.3.0 */
+/** @version 0.4.0 */
 function mustache(template, self, parent, invert) {
   var render = mustache
   var output = ""
   var i
 
+  function get (ctx, path) {
+    path = path.pop ? path : path.split(".")
+    ctx = ctx[path.shift()] || ""
+    return (0 in path) ? get(ctx, path) : ctx
+  }
+
   self = Array.isArray(self) ? self : (self ? [self] : [])
-  self = invert ? self.length ? [] : [1] : self
+  self = invert ? (0 in self) ? [] : [1] : self
   
   for (i = 0; i < self.length; i++) {
     var childCode = ''
@@ -13,17 +19,17 @@ function mustache(template, self, parent, invert) {
     var inverted
     var ctx = (typeof self[i] == "object") ? self[i] : {}
     ctx.prototype = parent
-    ctx["."] = self[i]
+    ctx[""] = {"": self[i]}
     
     template.replace(/([\s\S]*?)({{((\/)|(\^)|#)(.*?)}}|$)/g,
       function(match, code, y, z, close, invert, name) {
         if (!depth) {
           output += code.replace(/{{{(.*?)}}}|{{(!?)(&?)(>?)(.*?)}}/g,
             function(match, raw, comment, isRaw, partial, name) {
-              return raw ? ctx[raw] || ""
-                : isRaw ? ctx[name] || ""
-                : partial ? render(ctx[name] || "", ctx)
-                : !comment ? new Option(ctx[name] || "").innerHTML
+              return raw ? get(ctx, raw)
+                : isRaw ? get(ctx, name)
+                : partial ? render(get(ctx, name), ctx)
+                : !comment ? new Option(get(ctx, name)).innerHTML
                 : ""
             }
           )
@@ -33,12 +39,13 @@ function mustache(template, self, parent, invert) {
         }
         if (close) {
           if (!--depth) {
-            if (/^f/.test(typeof ctx[name])) {
-              output += ctx[name].call(ctx, childCode, function (template) {
+            name = get(ctx, name)
+            if (/^f/.test(typeof name)) {
+              output += name.call(ctx, childCode, function (template) {
                 return render(template, ctx)
               })
             } else {
-              output += render(childCode, ctx[name], ctx, inverted) 
+              output += render(childCode, name, ctx, inverted) 
             }
             childCode = ""
           }
