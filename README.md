@@ -1,7 +1,14 @@
 # Tiny Mustache
-The smallest implementation of Mustache template engine.
+The smallest implementation of [Mustache](https://mustache.github.io/) template engine.
 
 Only **442 bytes** gzipped.
+
+## Usage
+
+```javascript
+mustache("Hello {{name}}!", {name: "world"})
+// => Hello world!
+```
 
 ## Features
 - [x] variables `{{escaped}}`, `{{&unescaped}}`, `{{{unescaped}}}`
@@ -10,16 +17,9 @@ Only **442 bytes** gzipped.
 - [x] lambdas `{{#lambda}}`
 - [x] comments `{{!comment}}`
 - [x] partials `{{>partial}}`
-- [x] tests
 - [x] variables dot notation `{{obj.prop}}`
-- [ ] set delimiter `{{=<% %>=}}`
+- [x] tests
 
-## Usage
+## Not implemented
+- set delimiter `{{=<% %>=}}`
 
-```javascript
-var template = `Hello {{name}}!`
-var context = {name: "world"}
-
-mustache(template, context)
-// => Hello world!
-```
