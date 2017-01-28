@@ -1,4 +1,4 @@
-/** @version 0.4.0 */
+/** @version 0.4.1 */
 function mustache(template, self, parent, invert) {
   var render = mustache
   var output = ""
@@ -18,7 +18,7 @@ function mustache(template, self, parent, invert) {
     var depth = 0
     var inverted
     var ctx = (typeof self[i] == "object") ? self[i] : {}
-    ctx.prototype = parent
+    ctx = Object.assign({}, parent, ctx)
     ctx[""] = {"": self[i]}
     
     template.replace(/([\s\S]*?)({{((\/)|(\^)|#)(.*?)}}|$)/g,
