@@ -1,7 +1,7 @@
 # Tiny Mustache
 The smallest implementation of [Mustache](https://mustache.github.io/) template engine.
 
-Only **442 bytes** gzipped.
+Only **446 bytes** gzipped.
 
 ## Usage
 
