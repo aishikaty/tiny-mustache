@@ -23,3 +23,5 @@ mustache("Hello {{name}}!", {name: "world"})
 ## Not implemented
 - set delimiter `{{=<% %>=}}`
 
+## Browser support
+This library works in every modern broser. To use it in IE you will need a [polyfill for `Object.assign()`](https://github.com/rubennorte/es6-object-assign).
