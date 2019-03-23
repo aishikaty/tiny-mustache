@@ -8,7 +8,7 @@ function mustache(template, self, parent, invert) {
   function get (ctx, path, access) {
       if (access && path in access) return access[path]
       var split = path.split(".")
-      for (var i=0; ctx && i<split.length; i++) 
+      for (var i=0; i<split.length && (ctx||!i); i++) 
           ctx = ctx[split[i]] || null
       if (access) access[path] = ctx
       return ctx
