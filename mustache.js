@@ -28,21 +28,21 @@ function mustache(template, self, parent, invert) {
     template.replace(/([\s\S]*?)({{((\/)|(\^)|#)(.*?)}}|$)/g,
       function(match, code, y, z, close, invert, name) {
         if (!depth) {
-                output += code.replace(/{{{(.*?)}}}|{{(!?)(&?)(>?)(.*?)}}/g,
-                    function(match, raw, comment, isRaw, partial, name) {
-                        return raw ? get(ctx, raw, access)
-                            : isRaw ? get(ctx, name, access)
-                            : partial ? render(get(ctx, name, access), ctx)
-                            : !comment ? new Option(get(ctx, name, access)).innerHTML
-                            : ""
-                        }
-                    )
-                inverted = invert
-            } else childCode += depth && !close || depth > 1 ? match : code
+            output += code.replace(/{{{(.*?)}}}|{{(!?)(&?)(>?)(.*?)}}/g,
+                function(match, raw, comment, isRaw, partial, name) {
+                    return raw ? get(ctx, raw, access)
+                        : isRaw ? get(ctx, name, access)
+                        : partial ? render(get(ctx, name, access), ctx)
+                        : !comment ? new Option(get(ctx, name, access)).innerHTML
+                        : ""
+                    }
+                )
+            inverted = invert
+        } else childCode += depth && !close || depth > 1 ? match : code
 
-            if (close) {
-                if (!--depth) {
-                    name = get(ctx, name, access)
+        if (close) {
+            if (!--depth) {
+                name = get(ctx, name, access)
             if (/^f/.test(typeof name)) {
               output += name.call(ctx, childCode, function (template) {
                 return render(template, ctx)
