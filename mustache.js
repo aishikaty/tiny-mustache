@@ -2,13 +2,19 @@
 function mustache(template, self, parent, invert) {
   var render = mustache
   var output = ""
+  var access = {}
   var i
 
-  function get (ctx, path) {
-    path = path.pop ? path : path.split(".")
-    ctx = ctx[path.shift()] || ""
-    return (0 in path) ? get(ctx, path) : ctx
-  }
+  function get (ctx, path, access) {
+      if (access && path in access) return access[path]
+      var split = path.split(".")
+      var i = 0 
+      do {
+          ctx = ctx[split[i++]] || ""
+      } while (ctx && i<split.length)
+      if (access) access[path] = ctx
+      return ctx
+      }
 
   self = Array.isArray(self) ? self : (self ? [self] : [])
   self = invert ? (0 in self) ? [] : [1] : self
