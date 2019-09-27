@@ -1,4 +1,4 @@
-/** @version 0.4.1 */
+/** @version 0.4.2 */
 function mustache(template, self, parent, invert) {
   var render = mustache
   var output = ""
@@ -6,7 +6,8 @@ function mustache(template, self, parent, invert) {
 
   function get (ctx, path) {
     path = path.pop ? path : path.split(".")
-    ctx = ctx[path.shift()] || ""
+    ctx = ctx[path.shift()]
+    ctx = ctx != null ? ctx : ""
     return (0 in path) ? get(ctx, path) : ctx
   }
 
