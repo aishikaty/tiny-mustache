@@ -2,6 +2,8 @@
 <script>
   var template = `
   var is {{var}}
+  zero value is {{zerovar}}
+  undefined var is {{undefinedvar}}
   nested object is
   {{#obj}}
     {{#goes}}
@@ -34,6 +36,8 @@
 
   var expected = `
   var is &lt;okay&gt;
+  zero value is 0
+  undefined var is 
   nested object is
   
     
@@ -76,6 +80,7 @@
       return "<b>" + render(text + this.dot[0]) + "</b>"
     },
     partial: "{{{var}}}",
+    zerovar: 0
   }
   var output = mustache(template, ctx)
   

@@ -1,7 +1,7 @@
 # Tiny Mustache
 The smallest implementation of [Mustache](https://mustache.github.io/) template engine.
 
-Only **446 bytes** gzipped.
+Only **436 bytes** gzipped.
 
 ## Usage
 
@@ -24,4 +24,4 @@ mustache("Hello {{name}}!", {name: "world"})
 - set delimiter `{{=<% %>=}}`
 
 ## Browser support
-This library works in every modern broser. To use it in IE you will need a [polyfill for `Object.assign()`](https://github.com/rubennorte/es6-object-assign).
+This library works in every modern browser. To use it in IE you will need a [polyfill for `Object.assign()`](https://github.com/rubennorte/es6-object-assign).
