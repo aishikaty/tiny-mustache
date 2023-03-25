@@ -6,6 +6,28 @@
   .failed:before {
     content: "❌";
   }
+
+  code {
+    border: 1px solid #ccc;
+    background: #eee;
+    display: table;
+    font-family: monospace;
+    padding: 0.35em;
+    margin: 0.35em 0;
+    white-space: pre;
+  }
+
+  .passed code {
+    display: none;
+  }
+
+  .actual{
+    border-color: #F44336;
+  }
+  .expected {
+    border-color: #7CB342;
+  }
+
 </style>
 <pre></pre>
 <ol></ol>
@@ -89,6 +111,8 @@
     results.insertAdjacentHTML("beforeend", `
         <li value="${i + 1}" class="${passed?'passed':'failed'}">
           <span>${passed?'Passed':'Failed'}</span>
+            <code class="expected">${expected[i]}</code>
+            <code class="actual">${output}</code>
         </li>
       `)
 
