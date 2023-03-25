@@ -3,75 +3,60 @@
 <script>
   const element = document.querySelector("pre")
 
-  const template = `
-  var is {{var}}
-  zero value is {{zerovar}}
-  undefined var is {{undefinedvar}}
-  nested object is
+  let passed = true
+
+  const templates = [
+    'var is {{var}}',
+    'zero value is {{zerovar}}',
+    'undefined var is {{undefinedvar}}',
+    `nested object is
   {{#obj}}
     {{#goes}}
     {{deep}}
     {{/goes}}
-  {{/obj}}
-  dot syntax is {{obj.goes.deep}}
-  dot syntax in section is {{#obj.goes}}{{deep}}{{/obj.goes}}
-  list is 
+  {{/obj}}`,
+    'dot syntax is {{obj.goes.deep}}',
+    'dot syntax in section is {{#obj.goes}}{{deep}}{{/obj.goes}}',
+    `list is
+
   {{#list}}
     {{item}}
-  {{/list}}
-  inverted is
+  {{/list}}`,
+    `inverted is
   {{^inverted}}
     okay
-  {{/inverted}}
-  dot is
+  {{/inverted}}`,
+    `dot is
   {{#dot}}
     {{.}}
-  {{/dot}}
-  lambda is
+  {{/dot}}`,
+    `lambda is
   {{#lambda}}
     {{{raw}}}
-  {{/lambda}}
-  raw is {{{raw}}}
-  raw2 is {{&raw}}
-  comment is {{!not}} okay
-  partial is {{>partial}}
-  `
+  {{/lambda}}`,
+    'raw is {{{raw}}}',
+    'raw2 is {{&raw}}',
+    'comment is {{!not}} okay',
+    'partial is {{>partial}}'
+  ]
 
-  const expected = `
-  var is &lt;okay&gt;
-  zero value is 0
-  undefined var is 
-  nested object is
-  
-    
-    okay
-    
-  
-  dot syntax is okay
-  dot syntax in section is okay
-  list is 
-  
-    okay
-  
-    okay2
-  
-  inverted is
-  
-    okay
-  
-  dot is
-  
-    okay
-  
-  lambda is
-  <b>
-    <okay>
-  okay</b>
-  raw is <okay>
-  raw2 is <okay>
-  comment is  okay
-  partial is <okay>
-  `
+  const expected = [
+    'var is &lt;okay&gt;',
+    'zero value is 0',
+    'undefined var is ',
+    'nested object is\n  \n    \n    okay\n    \n  ',
+    'dot syntax is okay',
+    'dot syntax in section is okay',
+    'list is\n\n  \n    okay\n  \n    okay2\n  ',
+    'inverted is\n  \n    okay\n  ',
+    'dot is\n  \n    okay\n  ',
+    'lambda is\n  <b>\n    <okay>\n  okay</b>',
+    'raw is <okay>',
+    'raw2 is <okay>',
+    'comment is  okay',
+    'partial is <okay>'
+  ]
+
   const ctx = {
     var: "<okay>",
     obj: {goes: {deep: "okay"}},
@@ -85,14 +70,19 @@
     partial: "{{{var}}}",
     zerovar: 0
   }
-  const output = mustache(template, ctx)
 
+  templates.forEach(function (template, i) {
+    const output = mustache(template, ctx)
+    passed = passed && output === expected[i]
+    console.log(output)
+  })
+
+  const template = templates.join("\n")
   const start = Date.now()
   let n = 100
   while (n--) {
     mustache(template, ctx)
   }
   element.insertAdjacentHTML("beforeend", `Rendered in ${(Date.now() - start) / 100}ms\n`)
-  element.insertAdjacentHTML("beforeend", `Test ${output === expected ? "successful :)" : `FAILED :(`}`)
-  console.log(output)
+  element.insertAdjacentHTML("beforeend", `Test ${passed ? "successful :)" : `FAILED :(`}`)
 </script>
