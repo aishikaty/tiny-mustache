@@ -1,5 +1,8 @@
+<pre></pre>
 <script src="mustache.js"></script>
 <script>
+  const element = document.querySelector("pre")
+
   const template = `
   var is {{var}}
   zero value is {{zerovar}}
@@ -89,7 +92,7 @@
   while (n--) {
     mustache(template, ctx)
   }
-  document.write(`<pre>Rendered in ${(Date.now() - start) / 100}ms\n`)
-  document.write(`Test ${output === expected ? "successful :)" : `FAILED :(`}`)
+  element.insertAdjacentHTML("beforeend", `Rendered in ${(Date.now() - start) / 100}ms\n`)
+  element.insertAdjacentHTML("beforeend", `Test ${output === expected ? "successful :)" : `FAILED :(`}`)
   console.log(output)
 </script>
