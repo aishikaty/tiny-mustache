@@ -89,7 +89,7 @@
   while (n--) {
     mustache(template, ctx)
   }
-  document.write("<pre>Rendered in " + (Date.now() - start) / 100 + "ms\n")
-  document.write("Test " + (output === expected ? "successful :)" : "FAILED :("))
+  document.write(`<pre>Rendered in ${(Date.now() - start) / 100}ms\n`)
+  document.write(`Test ${output === expected ? "successful :)" : `FAILED :(`}`)
   console.log(output)
 </script>
