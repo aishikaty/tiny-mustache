@@ -1,4 +1,12 @@
 <meta charset="UTF-8">
+<style>
+  .passed:before {
+    content: "✅";
+  }
+  .failed:before {
+    content: "❌";
+  }
+</style>
 <pre></pre>
 <ol></ol>
 <script src="mustache.js"></script>
@@ -79,8 +87,8 @@
     const passed = output === expected[i];
 
     results.insertAdjacentHTML("beforeend", `
-        <li value="${i + 1}">
-          <span>${passed?'✅ Passed':'❌ Failed'}</span>
+        <li value="${i + 1}" class="${passed?'passed':'failed'}">
+          <span>${passed?'Passed':'Failed'}</span>
         </li>
       `)
 
