@@ -1,78 +1,107 @@
+<meta charset="UTF-8">
+<style>
+  .passed:before {
+    content: "✅";
+  }
+
+  .failed:before {
+    content: "❌";
+  }
+
+  code {
+    border: 1px solid #ccc;
+    background: #eee;
+    display: table;
+    font-family: monospace;
+    padding: 0.35em;
+    margin: 0.35em 0;
+    white-space: pre;
+  }
+
+  .passed code {
+    display: none;
+  }
+
+  .actual {
+    border-color: #F44336;
+  }
+
+  .expected {
+    border-color: #7CB342;
+  }
+</style>
+<pre></pre>
+<ol></ol>
 <script src="mustache.js"></script>
 <script>
-  var template = `
-  var is {{var}}
-  zero value is {{zerovar}}
-  undefined var is {{undefinedvar}}
-  nested object is
+  const showHiddenCharacters = string => string
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll(' ', '·')
+      .replaceAll('\n', '↲\n')
+      .replaceAll('\t', '⇒')
+
+  const element = document.querySelector("pre")
+  const results = document.querySelector("ol")
+
+  let allPassed = true
+
+  const templates = [
+    'var is {{var}}',
+    'zero value is {{zerovar}}',
+    'undefined var is {{undefinedvar}}',
+    `nested object is
   {{#obj}}
     {{#goes}}
     {{deep}}
     {{/goes}}
-  {{/obj}}
-  dot syntax is {{obj.goes.deep}}
-  dot syntax in section is {{#obj.goes}}{{deep}}{{/obj.goes}}
-  list is 
+  {{/obj}}`,
+    'dot syntax is {{obj.goes.deep}}',
+    'dot syntax in section is {{#obj.goes}}{{deep}}{{/obj.goes}}',
+    `list is
+
   {{#list}}
     {{item}}
-  {{/list}}
-  inverted is
+  {{/list}}`,
+    `inverted is
   {{^inverted}}
     okay
-  {{/inverted}}
-  dot is
+  {{/inverted}}`,
+    `dot is
   {{#dot}}
     {{.}}
-  {{/dot}}
-  lambda is
+  {{/dot}}`,
+    `lambda is
   {{#lambda}}
     {{{raw}}}
-  {{/lambda}}
-  raw is {{{raw}}}
-  raw2 is {{&raw}}
-  comment is {{!not}} okay
-  partial is {{>partial}}
-  `
+  {{/lambda}}`,
+    'raw is {{{raw}}}',
+    'raw2 is {{&raw}}',
+    'comment is {{!not}} okay',
+    'partial is {{>partial}}'
+  ]
 
-  var expected = `
-  var is &lt;okay&gt;
-  zero value is 0
-  undefined var is 
-  nested object is
-  
-    
-    okay
-    
-  
-  dot syntax is okay
-  dot syntax in section is okay
-  list is 
-  
-    okay
-  
-    okay2
-  
-  inverted is
-  
-    okay
-  
-  dot is
-  
-    okay
-  
-  lambda is
-  <b>
-    <okay>
-  okay</b>
-  raw is <okay>
-  raw2 is <okay>
-  comment is  okay
-  partial is <okay>
-  `
-  var ctx = {
+  const expected = [
+    'var is &lt;okay&gt;',
+    'zero value is 0',
+    'undefined var is ',
+    'nested object is\n  \n    \n    okay\n    \n  ',
+    'dot syntax is okay',
+    'dot syntax in section is okay',
+    'list is\n\n  \n    okay\n  \n    okay2\n  ',
+    'inverted is\n  \n    okay\n  ',
+    'dot is\n  \n    okay\n  ',
+    'lambda is\n  <b>\n    <okay>\n  okay</b>',
+    'raw is <okay>',
+    'raw2 is <okay>',
+    'comment is  okay',
+    'partial is <okay>'
+  ]
+
+  const ctx = {
     var: "<okay>",
     obj: {goes: {deep: "okay"}},
-    list:[{item:"okay"},{item:"okay2"}],
+    list: [{item: "okay"}, {item: "okay2"}],
     dot: ["okay"],
     raw: "<okay>",
     inverted: false,
@@ -82,14 +111,29 @@
     partial: "{{{var}}}",
     zerovar: 0
   }
-  var output = mustache(template, ctx)
-  
-  var start = Date.now()
-  var n = 100
+
+  templates.forEach(function (template, i) {
+    const output = mustache(template, ctx)
+    const passed = output === expected[i]
+
+    results.insertAdjacentHTML("beforeend", `
+        <li value="${i + 1}" class="${passed ? 'passed' : 'failed'}">
+          <span>${passed ? 'Passed' : 'Failed'}</span>
+            <code class="expected">${showHiddenCharacters(expected[i])}</code>
+            <code class="actual">${showHiddenCharacters(output)}</code>
+        </li>
+      `)
+
+    allPassed = allPassed && passed
+    console.log(output)
+  })
+
+  const template = templates.join("\n")
+  const start = Date.now()
+  let n = 100
   while (n--) {
     mustache(template, ctx)
   }
-  document.write("<pre>Rendered in " + (Date.now() - start) / 100 + "ms\n")
-  document.write("Test " + (output === expected ? "successful :)" : "FAILED :("))
-  console.log(output)
+  element.insertAdjacentHTML("beforeend", `Rendered in ${(Date.now() - start) / 100}ms\n`)
+  element.insertAdjacentHTML("beforeend", `Test ${allPassed ? "successful :)" : `FAILED :(`}`)
 </script>
