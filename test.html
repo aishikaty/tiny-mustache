@@ -1,6 +1,6 @@
 <script src="mustache.js"></script>
 <script>
-  var template = `
+  const template = `
   var is {{var}}
   zero value is {{zerovar}}
   undefined var is {{undefinedvar}}
@@ -34,7 +34,7 @@
   partial is {{>partial}}
   `
 
-  var expected = `
+  const expected = `
   var is &lt;okay&gt;
   zero value is 0
   undefined var is 
@@ -69,10 +69,10 @@
   comment is  okay
   partial is <okay>
   `
-  var ctx = {
+  const ctx = {
     var: "<okay>",
     obj: {goes: {deep: "okay"}},
-    list:[{item:"okay"},{item:"okay2"}],
+    list: [{item: "okay"}, {item: "okay2"}],
     dot: ["okay"],
     raw: "<okay>",
     inverted: false,
@@ -82,10 +82,10 @@
     partial: "{{{var}}}",
     zerovar: 0
   }
-  var output = mustache(template, ctx)
-  
-  var start = Date.now()
-  var n = 100
+  const output = mustache(template, ctx)
+
+  const start = Date.now()
+  let n = 100
   while (n--) {
     mustache(template, ctx)
   }
