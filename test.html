@@ -33,6 +33,13 @@
 <ol></ol>
 <script src="mustache.js"></script>
 <script>
+  const showHiddenCharacters = string => string
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll(' ', '·')
+      .replaceAll('\n', '↲\n')
+      .replaceAll('\t', '⇒');
+
   const element = document.querySelector("pre")
   const results = document.querySelector("ol");
 
@@ -111,8 +118,8 @@
     results.insertAdjacentHTML("beforeend", `
         <li value="${i + 1}" class="${passed?'passed':'failed'}">
           <span>${passed?'Passed':'Failed'}</span>
-            <code class="expected">${expected[i]}</code>
-            <code class="actual">${output}</code>
+            <code class="expected">${showHiddenCharacters(expected[i])}</code>
+            <code class="actual">${showHiddenCharacters(output)}</code>
         </li>
       `)
 
